@@ -38,6 +38,7 @@ RUN pip install -U numpy~=1.16.0 && \
   pip install -r requirements-server.txt && \
   rm -rf /root/.cache
 
+COPY templates /opt/marblecutter/templates
 COPY virtual /opt/marblecutter/virtual
 
 USER nobody
