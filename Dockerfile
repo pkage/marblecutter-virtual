@@ -40,6 +40,7 @@ RUN pip install -U numpy~=1.16.0 && \
 
 COPY templates /opt/marblecutter/templates
 COPY virtual /opt/marblecutter/virtual
+COPY server.py /opt/marblecutter/server.py
 
 USER nobody
 
