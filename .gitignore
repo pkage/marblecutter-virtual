@@ -3,7 +3,6 @@ environment.json
 lib/
 share/
 venv/
-.env
 .pypath/
 project.json
 up.json

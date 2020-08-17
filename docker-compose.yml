@@ -1,13 +1,18 @@
 version: '3'
 services:
+
   marblecutter:
     build: .
     environment:
       - PYTHONPATH=.
     volumes:
       - .:/opt/marblecutter/
-    ports:
-      - "8000:8000"
     restart: unless-stopped
-    entrypoint: python
-    command: server.py
+
+  caddy:
+    image: caddy:2.1.1-alpine
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+    command: caddy reverse-proxy --from ${DOMAIN} --to marblecutter:8000

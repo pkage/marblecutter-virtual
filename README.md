@@ -1,6 +1,70 @@
-# marblecutter-virtual
+# UrbaTiler
+
 [![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/olivierdalang/marblecutter-virtual.svg)](https://hub.docker.com/r/olivierdalang/marblecutter-virtual) [![test_docker](https://github.com/olivierdalang/marblecutter-virtual/workflows/test_docker/badge.svg)](https://github.com/olivierdalang/marblecutter-virtual/actions)
 
+Forké de marblecutter-virtual (voir readme ci-dessous).
+
+## Déploiement
+
+Le déploiement se fait via `git push` [à la heroku](https://tridnguyen.com/articles/simple-heroku-like-workflow-with-git-and-docker-compose/).
+
+Il faut que la branche poussée corresponde à la branche courante sur le remote.
+
+### Configuration
+
+Sur le VPS :
+
+```
+# installer les dépendances
+sudo apt-get update
+sudo apt-get install docker.io docker-compose git
+
+# initialiser un repo
+git init marblecutter
+cd marblecutter
+git checkout -b prod
+
+# configurer le repo
+git config receive.denyCurrentBranch updateInstead
+ln -s ../../git-deploy.sh ./.git/hooks/post-update
+```
+
+Sur votre machine :
+```
+# ajouter le remote (voir settings sur jelastics)
+git remote add prod ssh://40948-1164@gate.jpe.infomaniak.com:3022/root/marblecutter
+
+# créer la branche
+git checkout -b prod
+```
+
+### Déploiement
+
+Pusher la branche vers "prod" :
+```
+git push MY_REMOTE prod
+```
+
+## Test urls
+
+- OpenAerialMaps
+  - http://tiles.rdnt.io/bounds?url=https%3A%2F%2Foin-hotosm.s3.amazonaws.com%2F5f382b5cdf88ab000761cb10%2F0%2F5f382b5cdf88ab000761cb11.tif
+  - http://127.0.0.1:8000/bounds?url=https%3A%2F%2Foin-hotosm.s3.amazonaws.com%2F5f382b5cdf88ab000761cb10%2F0%2F5f382b5cdf88ab000761cb11.tif
+  - http://marblecutter.jcloud.ik-server.com:11543/bounds?url=https%3A%2F%2Foin-hotosm.s3.amazonaws.com%2F5f382b5cdf88ab000761cb10%2F0%2F5f382b5cdf88ab000761cb11.tif
+
+- Inondations-Dakar (DTK-extract)
+  - https://tiles.rdnt.io/bounds?url=https%3A%2F%2Finondations-dakar.org%2Fdataset%2F7e075bf5-7481-4253-8127-0ff1068938e4%2Fresource%2F3b8ef7ab-5d9e-49f7-93b9-e2b30e2ad733%2Fdownload%2Fdtk-extract-cog.tif
+  - http://127.0.0.1:8000/bounds?url=https%3A%2F%2Finondations-dakar.org%2Fdataset%2F7e075bf5-7481-4253-8127-0ff1068938e4%2Fresource%2F3b8ef7ab-5d9e-49f7-93b9-e2b30e2ad733%2Fdownload%2Fdtk-extract-cog.tif
+  - http://marblecutter.jcloud.ik-server.com:11543/bounds?url=https%3A%2F%2Finondations-dakar.org%2Fdataset%2F7e075bf5-7481-4253-8127-0ff1068938e4%2Fresource%2F3b8ef7ab-5d9e-49f7-93b9-e2b30e2ad733%2Fdownload%2Fdtk-extract-cog.tif
+
+- Inondations-Dakar (Ndiareme-complet, on a souvent des erreurs avec celle là ?)
+  - http://tiles.rdnt.io/bounds?url=https%3A%2F%2Finondations-dakar.org%2Fdataset%2Fe5717b4f-8590-4ed1-96ea-44a546b1411a%2Fresource%2F1dd744a3-3290-4589-94cd-da0e43337c12%2Fdownload%2Fndiareme-cog.tif
+  - http://127.0.0.1:8000/bounds?url=https%3A%2F%2Finondations-dakar.org%2Fdataset%2Fe5717b4f-8590-4ed1-96ea-44a546b1411a%2Fresource%2F1dd744a3-3290-4589-94cd-da0e43337c12%2Fdownload%2Fndiareme-cog.tif
+  - http://marblecutter.jcloud.ik-server.com:11543/bounds?url=https%3A%2F%2Finondations-dakar.org%2Fdataset%2Fe5717b4f-8590-4ed1-96ea-44a546b1411a%2Fresource%2F1dd744a3-3290-4589-94cd-da0e43337c12%2Fdownload%2Fndiareme-cog.tif
+
+------
+
+# marblecutter-virtual
 
 I am a tile server for HTTP(S)-accessible [Cloud Optimized GeoTIFFs
 (COGs)](http://www.cogeo.org/).
