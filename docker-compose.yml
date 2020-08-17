@@ -5,6 +5,9 @@ services:
     build: .
     environment:
       - PYTHONPATH=.
+      - GDAL_DISABLE_READDIR_ON_OPEN=YES
+      - CPL_VSIL_CURL_ALLOWED_EXTENSIONS=.tif
+
     volumes:
       - .:/opt/marblecutter/
     restart: unless-stopped
