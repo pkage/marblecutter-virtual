@@ -8,4 +8,4 @@ numpy ~= 1.16.0
 serverless-wsgi
 # temporary workaround for https://github.com/mapbox/rasterio/issues/1651
 mock
-pygdal ~= 2.3.2
+pygdal == 2.3.2.6

@@ -1,0 +1,30 @@
+name: test_docker
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+env:
+  # must be url-encoded
+  GEOTIFF_URL: http%3A%2F%2Foin-hotosm.s3.amazonaws.com%2F5a00a35831eff4000c380570%2F0%2Fb87bbaed-f735-4c31-a84d-0bc86a6055fe.tif
+jobs:
+  test_docker:
+    name: test_docker
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Build stack
+        run: docker-compose build
+
+      - name: Start stack
+        run: |
+          docker-compose up -d && \
+          sleep 10 && \
+          curl -sSf http://127.0.0.1:8000/preview?url=$GEOTIFF_URL > /dev/null && \
+          curl -sSf http://127.0.0.1:8000/tiles/20/473660/480782?url=$GEOTIFF_URL > /dev/null

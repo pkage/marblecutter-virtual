@@ -1,6 +1,6 @@
 # marblecutter-virtual
+[![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/olivierdalang/marblecutter-virtual.svg)](https://hub.docker.com/r/olivierdalang/marblecutter-virtual) [![test_docker](https://github.com/olivierdalang/marblecutter-virtual/workflows/test_docker/badge.svg)](https://github.com/olivierdalang/marblecutter-virtual/actions)
 
-![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/olivierdalang/marblecutter-virtual.svg)
 
 I am a tile server for HTTP(S)-accessible [Cloud Optimized GeoTIFFs
 (COGs)](http://www.cogeo.org/).
