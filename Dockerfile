@@ -33,8 +33,9 @@ WORKDIR /opt/marblecutter
 
 COPY requirements-server.txt /opt/marblecutter/
 COPY requirements.txt /opt/marblecutter/
+COPY requirements-frozen.txt /opt/marblecutter/
 
-RUN pip install -U numpy~=1.16.0 && \
+RUN pip install -r requirements-frozen.txt && \
   pip install -r requirements-server.txt && \
   rm -rf /root/.cache
 
