@@ -29,6 +29,10 @@ RUN apt-get update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
+# Fix root CA expired, as per https://stackoverflow.com/a/69396425/13690651
+RUN rm /usr/share/ca-certificates/mozilla/DST_Root_CA_X3.crt
+RUN update-ca-certificates
+
 WORKDIR /opt/marblecutter
 
 COPY requirements-server.txt /opt/marblecutter/
