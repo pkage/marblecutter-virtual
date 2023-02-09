@@ -1,7 +1,24 @@
-FROM quay.io/mojodna/gdal:v2.3.2
-LABEL maintainer="Seth Fitzsimmons <seth@mojodna.net>"
+# @author: Kenneth (mod. Patrick)
 
-ARG http_proxy
+# # Only 3.11>Python>3.8 is compatible from testing
+# FROM python:3.10-slim
+
+# base off latest gdal
+FROM osgeo/gdal:ubuntu-small-3.6.2
+
+# have to manually install python
+RUN apt-get update -y
+RUN apt-get install software-properties-common -y
+RUN add-apt-repository ppa:deadsnakes/ppa
+RUN apt-get update -y
+RUN apt-get install python3.10 python3.10-dev -y
+
+RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+RUN python3.10 get-pip.py
+
+ENV APP=serve:app
+ENV PORT=8082
+
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV LC_ALL C.UTF-8
@@ -14,39 +31,30 @@ ENV VSI_CACHE_SIZE 536870912
 # override this accordingly; should be 2-4x $(nproc)
 ENV WEB_CONCURRENCY 4
 
-EXPOSE 8000
 
-RUN apt-get update \
-  && apt-get upgrade -y \
-  && apt-get install -y --no-install-recommends \
-    build-essential \
-    ca-certificates \
-    cython \
-    git \
-    python-pip \
-    python-wheel \
-    python-setuptools \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
+# Add 'psycopg2' dependencies and 'tini' packages
+RUN apt-get update && apt-get install -y \
+        gcc \
+        g++ \
+        libpq-dev \
+        tini && \
+    rm -rf /var/lib/apt/lists/*
 
-# Fix root CA expired, as per https://stackoverflow.com/a/69396425/13690651
-RUN rm /usr/share/ca-certificates/mozilla/DST_Root_CA_X3.crt
-RUN update-ca-certificates
+# (?) Repository dependent dependencies
+WORKDIR /mvp/common/sr_common
+COPY common/sr_common  ./
+WORKDIR /mvp/common/sr_models
+COPY common/sr_models  ./
 
+# Install Python dependencies via 'poetry'
 WORKDIR /opt/marblecutter
 
-COPY requirements-server.txt /opt/marblecutter/
-COPY requirements.txt /opt/marblecutter/
-COPY requirements-frozen.txt /opt/marblecutter/
+COPY tiler/poetry.lock tiler/pyproject.toml ./
 
-RUN pip install -r requirements-frozen.txt && \
-  pip install -r requirements-server.txt && \
-  rm -rf /root/.cache
+# needs to run in venv because nothing is ever easy
+RUN python3.10 -m pip install --no-cache-dir poetry && \
+    poetry install --no-interaction
 
-COPY templates /opt/marblecutter/templates
-COPY virtual /opt/marblecutter/virtual
-COPY server.py /opt/marblecutter/server.py
 
-USER nobody
-
-ENTRYPOINT ["gunicorn", "-k", "gevent", "-b", "0.0.0.0", "--access-logfile", "-", "virtual.web:app"]
+ENTRYPOINT [ "/usr/bin/tini", "--" ]
+CMD [ "sh", "-c", "poetry run uvicorn ${APP} --host 0.0.0.0 --port ${PORT} --reload" ]
