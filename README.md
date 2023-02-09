@@ -1,12 +1,21 @@
 # marblecutter-virtual
-[![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/olivierdalang/marblecutter-virtual.svg)](https://hub.docker.com/r/olivierdalang/marblecutter-virtual) [![test_docker](https://github.com/olivierdalang/marblecutter-virtual/workflows/test_docker/badge.svg)](https://github.com/olivierdalang/marblecutter-virtual/actions)
 
+This is a modernization and extension of
+[marblecutter-virtual](//github.com/mojodna/marblecutter-virtual) based off of
+[olivierdalang's fork](//github.com/olivierdalang/marblecutter-virtual).
 
-I am a tile server for HTTP(S)-accessible [Cloud Optimized GeoTIFFs
+Changes:
+
+ - Runs on Python 3.10 instead of 2.7 (!)
+ - Changed to [Poetry](//python-poetry.org) for consistent dependency management
+ - Dockerfile consistently builds and specifies an GDAL version
+ - Better `docker-compose.yml`
+ - Addition of `global_min` and `global_max` overrides for consistent rendering
+
+## Overview 
+
+This is a tile server for HTTP(S)-accessible [Cloud Optimized GeoTIFFs
 (COGs)](http://www.cogeo.org/).
-
-I can also be seen as an example of a virtual `Catalog` implementation, drawing
-necessary metadata from URL parameters. For more information, check out [`VirtualCatalog`](virtual/catalogs.py) and [`web.py`](virtual/web.py).
 
 ## Running Locally
 
