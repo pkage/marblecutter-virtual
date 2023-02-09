@@ -7,10 +7,10 @@ services:
       - GDAL_DISABLE_READDIR_ON_OPEN=YES
       - CPL_VSIL_CURL_ALLOWED_EXTENSIONS=.tif
     platform: linux/amd64
-    volumes:
-      - .:/opt/marblecutter/
+    # volumes:
+    #   - .:/opt/marblecutter/
     ports:
-      - "8000:8000"
+      - "8085:8085"
     restart: unless-stopped
-    entrypoint: python
-    command: server.py
+    entrypoint: "poetry"
+    command: "run gunicorn -w 8 server.py"

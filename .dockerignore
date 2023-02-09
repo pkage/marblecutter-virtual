@@ -15,7 +15,6 @@ venv
 *.pyc
 .dockerignore
 .gitignore
-*.md
 .DS_Store
 .envrc
 !deps/prune.sh

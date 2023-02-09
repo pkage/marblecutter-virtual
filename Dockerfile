@@ -1,5 +1,3 @@
-# @author: Kenneth (mod. Patrick)
-
 # # Only 3.11>Python>3.8 is compatible from testing
 # FROM python:3.10-slim
 
@@ -16,9 +14,7 @@ RUN apt-get install python3.10 python3.10-dev -y
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 RUN python3.10 get-pip.py
 
-ENV APP=serve:app
-ENV PORT=8082
-
+ENV PORT=8085
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV LC_ALL C.UTF-8
@@ -36,20 +32,12 @@ ENV WEB_CONCURRENCY 4
 RUN apt-get update && apt-get install -y \
         gcc \
         g++ \
-        libpq-dev \
         tini && \
     rm -rf /var/lib/apt/lists/*
 
-# (?) Repository dependent dependencies
-WORKDIR /mvp/common/sr_common
-COPY common/sr_common  ./
-WORKDIR /mvp/common/sr_models
-COPY common/sr_models  ./
-
-# Install Python dependencies via 'poetry'
 WORKDIR /opt/marblecutter
 
-COPY tiler/poetry.lock tiler/pyproject.toml ./
+COPY . .
 
 # needs to run in venv because nothing is ever easy
 RUN python3.10 -m pip install --no-cache-dir poetry && \

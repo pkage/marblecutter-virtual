@@ -50,6 +50,8 @@ def make_catalog(args):
             nodata=args.get("nodata"),
             linear_stretch=args.get("linearStretch"),
             resample=args.get("resample"),
+            global_min=float(args.get("global_min")) if args.get("global_min") is not None else None,
+            global_max=float(args.get("global_max")) if args.get("global_max") is not None else None
         )
     except Exception as e:
         LOG.exception(e)
@@ -115,6 +117,7 @@ def preview():
 def render_png(z, x, y, scale=1):
     catalog = make_catalog(request.args)
     tile = Tile(x, y, z)
+
 
     headers, data = tiling.render_tile(
         tile,
