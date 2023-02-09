@@ -21,10 +21,8 @@ rio-tiler = "^4.1.7"
 rio-toa = "^0.3.0"
 mercantile = "^1.2.1"
 pillow = "^9.4.0"
-
-
-[tool.poetry.group.prod.dependencies]
 gunicorn = "^20.1.0"
+
 
 [build-system]
 requires = ["poetry-core"]

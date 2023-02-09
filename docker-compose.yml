@@ -13,4 +13,4 @@ services:
       - "8085:8085"
     restart: unless-stopped
     entrypoint: "poetry"
-    command: "run gunicorn -w 8 server.py"
+    command: "run gunicorn -w 8 server:app"

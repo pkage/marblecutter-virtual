@@ -17,9 +17,9 @@ Compose](https://docs.docker.com/compose/):
 docker-compose up
 ```
 
-A tile server will then be accessible on `localhost:8000`. To browse a map
+A tile server will then be accessible on `localhost:8085`. To browse a map
 preview, visit
-`http://localhost:8000/preview?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif`.
+`http://localhost:8085/preview?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif`.
 
 URLs (`url` in the query string) must be URL-encoded. From a browser's
 JavaScript console (or Node.js REPL), run:
@@ -43,7 +43,7 @@ If you need to access non-public files on S3, set your environment accordingly
 #### Example
 
 ```bash
-$ curl "http://localhost:8000/bounds?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif"
+$ curl "http://localhost:8085/bounds?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif"
 {
   "bounds": [
     -95.46993599071261,
@@ -62,6 +62,8 @@ $ curl "http://localhost:8000/bounds?url=https%3A%2F%2Fs3-us-west-2.amazonaws.co
 * `url` - a URL to a valid COG. Required.
 * `rgb` - Source bands to map to RGB channels. Defaults to `1,2,3`.
 * `nodata` - a custom NODATA value.
+* `global_min` - a global minimum data value for all bands.
+* `global_max` - a global maximum data value for all bands.
 * `linearStretch` - whether to stretch output to match min/max values present in
   the source. Useful for raw sensor output, e.g. earth observation (EO) data.
 * `resample` - Specify a custom resampling method (e.g. for discrete values).
@@ -79,19 +81,19 @@ source image (surfaced as transparency in the output).
 #### Examples
 
 ```bash
-$ curl "http://localhost:8000/tiles/14/3851/6812@2x?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif" | imgcat
+$ curl "http://localhost:8085/tiles/14/3851/6812@2x?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif" | imgcat
 ```
 
 ![RGB](docs/rgb.png)
 
 ```bash
-$ curl "http://localhost:8000/tiles/14/3851/6812@2x?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif&rgb=1,1,1" | imgcat
+$ curl "http://localhost:8085/tiles/14/3851/6812@2x?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif&rgb=1,1,1" | imgcat
 ```
 
 ![greyscale](docs/greyscale.png)
 
 ```bash
-$ curl "http://localhost:8000/tiles/14/3851/6812@2x?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif&rgb=1,1,1&linearStretch=true" | imgcat
+$ curl "http://localhost:8085/tiles/14/3851/6812@2x?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif&rgb=1,1,1&linearStretch=true" | imgcat
 ```
 
 ![greyscale stretched](docs/greyscale_stretched.png)
@@ -105,7 +107,7 @@ See tile parameters.
 #### Example
 
 ```bash
-$ curl "http://localhost:8000/tiles?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif"
+$ curl "http://localhost:8085/tiles?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif"
 {
   "bounds": [
     -95.46993599071261,
@@ -123,7 +125,7 @@ $ curl "http://localhost:8000/tiles?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com
   "name": "Untitled",
   "tilejson": "2.1.0",
   "tiles": [
-    "//localhost:8000/tiles/{z}/{x}/{y}?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif"
+    "//localhost:8085/tiles/{z}/{x}/{y}?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif"
   ]
 }
 ```
@@ -136,7 +138,7 @@ See tile parameters.
 
 #### Example
 
-`http://localhost:8000/preview?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif`
+`http://localhost:8085/preview?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif`
 
 ### `/debug` - Debug
 
@@ -148,55 +150,4 @@ Returns validation information from cog validator (see https://github.com/rouaul
 
 #### Example
 
-`http://localhost:8000/debug?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif`
-
-## Deploying to AWS
-
-marblecutter-virtual is deployed using the [AWS Serverless Application Model
-(SAM)](https://github.com/awslabs/serverless-application-model).
-
-Once you have the [SAM CLI](https://github.com/awslabs/aws-sam-cli) installed, you can build with:
-
-```bash
-sam build --use-container
-```
-
-You can then test it locally as though it's running on Lambda + API Gateway
-(it will be _really_ slow, as function invocations are not re-used in the
-same way as on Lambda proper):
-
-```bash
-sam local start-api
-```
-
-To deploy, first package the application:
-
-```bash
-sam package --s3-bucket <staging-bucket> --output-template-file packaged.yaml
-```
-
-Once staged, it can be deployed:
-
-```bash
-sam deploy \
-  --template-file packaged.yaml \
-  --stack-name marblecutter-virtual \
-  --capabilities CAPABILITY_IAM \
-  --parameter-overrides DomainName=<hostname>
-```
-
-These commands are wrapped as a `deploy` target, so this can be done more
-simply with:
-
-```bash
-S3_BUCKET=<staging-bucket> DOMAIN_NAME=<hostname> make deploy
-```
-
-`<staging-bucket>` must be in the target AWS region (`AWS_DEFAULT_REGION`).
-
-NOTE: when setting up a Cloudfront distribution in front of a regional API
-Gateway endpoint (which is what this process does), an `Origin Custom Header`
-will be added: `X-Forwarded-Host` should be the hostname used for your
-Cloudfront distribution (otherwise auto-generated tile URLs will use the API
-Gateway domain; CF sends a `Host` header corresponding to the origin, not the
-CDN endpoint).
+`http://localhost:8085/debug?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif`
