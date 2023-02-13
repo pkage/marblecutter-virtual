@@ -11,8 +11,8 @@ logging.basicConfig(level=logging.INFO)
 logging.getLogger("rasterio._base").setLevel(logging.WARNING)
 LOG = logging.getLogger(__name__)
 
-if 'FLASK_PROXY_FIX' in os.environ:
-    proxy_depth = int(os.environ['FLASK_PROXY_FIX'])
+if 'FLASK_PROXY_DEPTH' in os.environ:
+    proxy_depth = int(os.environ['FLASK_PROXY_DEPTH'])
     app.wsgi_app = ProxyFix(
         app.wsgi_app,
         x_for=proxy_depth,
