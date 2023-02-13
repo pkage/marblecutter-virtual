@@ -10,6 +10,9 @@ sub vcl_hash {
     return (lookup);
 }
 
+sub vcl_backend_response {
+    set beresp.ttl = 3d;
+}
 
 sub vcl_recv {
     if (req.url ~ "^/tiles/") {
