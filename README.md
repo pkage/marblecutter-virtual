@@ -11,6 +11,7 @@ Changes:
  - Dockerfile consistently builds and specifies an GDAL version
  - Better `docker-compose.yml`
  - Addition of `global_min` and `global_max` overrides for consistent rendering
+ - Addition of [Varnish](//varnish-cache.org/) to speed up rerenders
 
 ## Overview 
 
