@@ -12,8 +12,8 @@ services:
             - WEB_CONCURRENCY=4        # tune to 2-4x $(nproc)
             - FLASK_PROXY_DEPTH=2      # 1 if using nginx, 2 if using varnish+nginx
         platform: linux/amd64
-          # volumes:
-          #   - .:/opt/marblecutter/
+        # volumes:
+        #   - .:/opt/marblecutter/
         # ports:
         #   - "8085:8085"
         restart: unless-stopped
