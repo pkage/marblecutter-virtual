@@ -109,13 +109,12 @@
 
           L.tileLayer(provider, options).addTo(map);
 
-          var context = getParameterByName("context");
+            var OpenStreetMap_Mapnik = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+});
 
-          if (context != null && context !== "false") {
-            L.tileLayer(
-              "http://{s}.tile.stamen.com/toner-hybrid/{z}/{x}/{y}{r}.png"
-            ).addTo(map);
-          }
+            OpenStreetMap_Mapnik.addTo(map)
         });
     </script>
   </body>
