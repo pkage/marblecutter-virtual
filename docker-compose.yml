@@ -31,7 +31,7 @@ services:
         volumes:
           - "./varnish/default.vcl:/etc/varnish/default.vcl"
         ports:
-          - "6082:80"
+          - "8085:80"
         environment:
           - VARNISH_SIZE=2G  
         command: "-p default_keep=300"
