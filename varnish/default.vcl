@@ -16,8 +16,10 @@ sub vcl_backend_response {
 
 sub vcl_recv {
     if (req.url ~ "^/tiles/") {
+        set    req.http.X-Tiler-Cached = "cached";
         return (hash);
     } else {
+        set    req.http.X-Tiler-Cached = "not cached";
         return (pass);
     }
 }
