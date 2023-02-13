@@ -107,7 +107,6 @@
             provider = uri.protocol + "//" + uri.host + path + uri.search;
           }
 
-          L.tileLayer(provider, options).addTo(map);
 
             var OpenStreetMap_Mapnik = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
@@ -115,6 +114,8 @@
 });
 
             OpenStreetMap_Mapnik.addTo(map)
+
+          L.tileLayer(provider, options).addTo(map);
         });
     </script>
   </body>
