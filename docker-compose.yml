@@ -21,8 +21,6 @@ services:
         command: "run gunicorn -w 8 server:app"
     varnish:
         image: varnish:alpine
-        environment:
-            - VARNISH_SIZE=2G
         networks:
             - tiler
         depends_on:
@@ -30,11 +28,23 @@ services:
         container_name: varnish
         volumes:
           - "./varnish/default.vcl:/etc/varnish/default.vcl"
+          - "varnish-vol:/var/lib/varnish"
         ports:
           - "8085:80"
         environment:
-          - VARNISH_SIZE=2G  
+          - VARNISH_SIZE=256M
         command: "-p default_keep=300"
+    caddy:
+        image: caddy:2.6.3-alpine
+        environment:
+            - EXTERNAL_HOSTNAME=example.com
+        depends_on:
+            - varnish
+        ports:
+          - "80:80"
+          - "443:443"
 networks:
     tiler:
+volumes:
+    varnish-vol:
 
