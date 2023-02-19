@@ -27,22 +27,24 @@ services:
             - marblecutter
         container_name: varnish
         volumes:
-          - "./varnish/default.vcl:/etc/varnish/default.vcl"
-          - "varnish-vol:/var/lib/varnish"
+            - "./varnish/default.vcl:/etc/varnish/default.vcl"
+            - "varnish-vol:/var/lib/varnish"
         ports:
-          - "8085:80"
+            - "8085:80"
         environment:
-          - VARNISH_SIZE=256M
+            - VARNISH_SIZE=256M
         command: "-p default_keep=300"
     caddy:
         image: caddy:2.6.3-alpine
-        environment:
-            - EXTERNAL_HOSTNAME=example.com
+        networks:
+            - tiler
         depends_on:
             - varnish
         ports:
-          - "80:80"
-          - "443:443"
+            - "80:80"
+            - "443:443"
+        profiles:
+            - "prod"
 networks:
     tiler:
 volumes:
